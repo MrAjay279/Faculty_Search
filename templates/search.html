@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Faculty Schedule</title>
+  <style>
+    /* Global */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Times, Arial, sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-bottom: 5px solid black;
+      border-top: 5px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      height: 60px;
+      margin-right: 20px;
+      border-radius: 30px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+      display: inline-block;
+    }
+
+    /* Main content wrapper */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 30px;
+      width: 100%;
+      max-width: 360px;
+      text-align: left;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #ff6600;
+      text-align: center;
+    }
+
+    /* Form elements */
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #333;
+    }
+    select, input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    select:focus, input[type="submit"]:focus {
+      outline: none;
+      border-color: #ff8533;
+    }
+    input[type="submit"] {
+      background-color: #ff6600;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s ease-in-out;
+    }
+    input[type="submit"]:hover {
+      background-color: #ff8533;
+    }
+
+    /* Result */
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: lightgreen;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .result ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .result li {
+      margin-bottom: 8px;
+      font-size: 15px;
+      color: #444;
+    }
+
+    /* Back link */
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 25px;
+      color: #ff6600;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      background-color: rgb(0, 0, 0);
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="CMR Logo" class="logo">
+    <h1>CMR Technical Campus</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Search Faculty Schedule</h2>
+      <form method="post">
+        <label for="faculty">Select Faculty:</label>
+        <select name="faculty" id="faculty" required>
+          {% for _, row in faculty_list.iterrows() %}
+            <option value="{{ row['Faculty_id'] }}">{{ row['Name'] }} ({{ row['Faculty_id'] }})</option>
+          {% endfor %}
+        </select>
+
+        <label for="day">Select Day:</label>
+        <select name="day" id="day" required>
+          {% for d in ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY'] %}
+            <option value="{{ d }}">{{ d }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="period">Select Period:</label>
+        <select name="period" id="period" required>
+          {% for p in range(1,7) %}
+            <option value="{{ p }}">{{ p }}</option>
+          {% endfor %}
+        </select>
+
+        <input type="submit" value="Search">
+      </form>
+
+      {% if result %}
+        <div class="result">
+          {% if result is string %}
+            <p><strong>{{ result }}</strong></p>
+          {% else %}
+            <ul>
+              <li><strong>Name:</strong> {{ result['Name'] }}</li>
+              <li><strong>Class:</strong> {{ result['Class'] }}</li>
+              <li><strong>Room No.:</strong> {{ result['Room_Number'] }}</li>
+              <li><strong>Subject:</strong> {{ result['Subject'] }}</li>
+            </ul>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <a href="/" class="back-link">🔙 Back to Faculty List</a>
+    </div>
+  </main>
+
+  <footer>
+    © CMR Technical Campus
+  </footer>
+</body>
+</html>

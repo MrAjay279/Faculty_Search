@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Faculty List</title>
+  <style>
+    /* Global */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Times, Arial, sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background-color: #ff6600;
+      color: #fff;
+      padding: 15px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-bottom: 5px solid black;
+      border-top: 5px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      height: 60px;
+      margin-right: 20px;
+      border-radius: 30px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+      display: inline-block;
+    }
+
+    /* Main content */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 30px;
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #ff6600;
+      font-size: 24px;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      font-size: 15px;
+      color: #444;
+    }
+    th {
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    tr:nth-child(even) {
+      background-color: #fbfbfb;
+    }
+
+    /* Button */
+    .btn {
+      display: inline-block;
+      background-color: #ff6600;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.2s ease-in-out;
+    }
+    .btn:hover {
+      background-color: #ff8533;
+    }
+
+    /* Footer */
+    footer {
+      background-color: rgb(0, 0, 0);
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="{{ url_for('static', filename='logo.png') }}" 
+    alt="CMR Logo" class="logo">
+    <h1>CMR Technical Campus</h1>
+  </header>
+  <hr class="divider">
+
+  <main>
+    <div class="card">
+      <h2>Faculty List</h2>
+      <table>
+        <tr>
+          <th>Faculty ID</th>
+          <th>Name</th>
+          <th>Phone Number</th>
+        </tr>
+        {% for _, row in faculty_list.iterrows() %}
+        <tr>
+          <td>{{ row['Faculty_id'] }}</td>
+          <td>{{ row['Name'] }}</td>
+          <td>{{ row['Phone'] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      <a href="/search" class="btn">Go to Search Page</a>
+    </div>
+  </main>
+
+  <footer>
+    © CMR Technical Campus
+  </footer>
+
+</body>
+</html>
